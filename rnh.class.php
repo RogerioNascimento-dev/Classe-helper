@@ -58,6 +58,7 @@ class RNH{
 	        
 	        $return['error_number']   = 0;
 	        $return['error_detail']  = "Sucesso!";
+	        $return['filename']  = $filename;
 	        
 	      
 	    }else{
@@ -93,56 +94,65 @@ class RNH{
 
 
 	public static function uploadFiles($file,$files_accept,$type_file){
-		$total_files = count($file['name']);
-		
-		for($x=0;$x<$total_files;$x++){
-			
-
+		$return_files = array();
+		$return = array();
+		$return['not_acepted'] = array();
+		// diretório de destino do arquivo
 		$pasta    = "../uploads/"; //nome da pasta que ira salvar os arquivos
-	  	if(!file_exists($pasta)){mkdir($pasta, 0755);}//se a pasta não existiir cria a pasta
+		if(!file_exists($pasta)){mkdir($pasta, 0755);}//se a pasta não existiir cria a pasta
 
-	  
-
-	    $extencao   = self::getExt($file['name'][$x]);//pega a extenção do arquivo
-	    $filename   = md5(time()).$extencao;//nome unico para o arquivo, exitar conflito
-
-	    if(in_array($extencao, $files_accept)){
-
-	    	$pasta  = $pasta.$type_file.'/';
+		$pasta  = $pasta.$type_file.'/';
 	      
 	    if(!file_exists($pasta)){mkdir($pasta, 0755);}
 
-	    if(move_uploaded_file($file['tmp_name'][$x], $pasta.$filename)){
-	        
-	        
-	        $return['error_number']   = 0;
-	        $return['error_detail']  = "Sucesso!";
-	        
-	      
-	    }else{
-	        
-	        
-	        $return['error_number']   = 1;
-	        $return['error_detail']  = "Não foi possível realizar esta operação";
-	        
-	        
-	    }//fim da area que move o arquivo
+ 	      
+    // cria uma variável para facilitar
+    $arquivos = $file['arquivos'];
+ 
+    // total de arquivos enviados
+    $total = count($arquivos['name']);
+ 
+    for ($i = 0; $i < $total; $i++)
+    {
+    	$extencao   = self::getExt($arquivos['name'][$i]);//pega a extenção do arquivo
+	    $filename   = md5(time().$i).$extencao;//nome unico para o arquivo, exitar conflito
 
-
-	    }else{      
-
-	        
-	        $return['error_number']   	= 1;
-	        $return['error_detail']  	= "O arquivo selecionado não é aceito";       
-	       
-	    }
-
-
-		}#EndFor
-
+	if(in_array($extencao, $files_accept)){
+         
+        if (!move_uploaded_file($arquivos['tmp_name'][$i], $pasta . '/' . $filename))
+        {
+            $return['error_number']   	= 1;
+	        $return['error_detail']  	= "Não foi possível realizar esta operação";
+        }else{
+        	$return_files[] = $filename;
+        }
+    }else{
+    	    
+	        $return['not_acepted'][] = $arquivos['name'][$i];
+    }
+   
+}
+ 
+    		$return['error_number']   	= 0;
+	        $return['error_detail']  	= "Sucesso!";
+	        $return['filenames']  		= $return_files;
+	
 		return $return;
 
+
 	}#fim do método de upload de arquivos mutiplos
+
+
+	public static function session($session_name,$getOrSet,$value = ''){
+
+		if($getOrSet == 'set'){
+			$_SESSION[$session_name] = $value;
+		}else if($getOrSet == 'get'){
+			return $_SESSION[$session_name];
+		}
+
+		
+	}
 
 
 }# Fim da classe

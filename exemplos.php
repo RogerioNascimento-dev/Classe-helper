@@ -65,35 +65,29 @@ echo '<br>';
 ?>
 
 <form action="" method="post" enctype="multipart/form-data">
-	<input type="file" multiple="multiple" name="arquivo_name[]" id="arquivo_id"/>
+	<input type="file" multiple="multiple" name="arquivos" id="arquivos"/>
 	
 	<button class="btn btn-default" type="submit">Enviar</button>
 </form>
 
 <?php 
-
-if($_FILES):	
-
-	$files_accept     = array('.jpg','.jpeg', '.gif','.png');
-	$ret = RNH::uploadFiles($_FILES['arquivo_name'],$files_accept,'image');
+/*
+#Chamando método de upload simples
+if(isset($_FILES['arquivos'])):		
+	$ret = RNH::uploadFile($_FILES['arquivos'],array('.jpg','.jpeg'),'bola');
 	print_r($ret);
-	//echo $ret;
-
-
-
-	echo '<pre> Arquivos enviados<br>';
-	print_r($_FILES);
-
 endif;
+*/
 
+/*
+#Chamando método de upload multiplo
+if(isset($_FILES['arquivos'])):   
+  $ret = RNH::uploadFiles($_FILES,array('.jpg','.jpeg'),'imagem');
+  echo '<pre>';
+  print_r($ret);
+endif;
+*/
 
-//Verificação de Segurança
-$url = $_SERVER["REQUEST_URI"];
-
-if(preg_match("/exemplos.php/", $url)){
-
-	echo 'achou';
-}
 
 ?>
 
