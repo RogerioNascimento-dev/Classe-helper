@@ -144,14 +144,30 @@ class RNH{
 
 
 	public static function session($session_name,$getOrSet,$value = ''){
+		$session_name = 'cap_'.$session_name;
+		@session_start();
 
-		if($getOrSet == 'set'){
-			$_SESSION[$session_name] = $value;
-		}else if($getOrSet == 'get'){
-			return $_SESSION[$session_name];
+		switch ($getOrSet) {
+			case 'set':
+			{
+				$_SESSION[$session_name] = $value;
+				$return = true;
+			}break;
+
+			case 'get':
+			{
+				if(isset($_SESSION[$session_name])):
+					$return = $_SESSION[$session_name];
+				else:
+					$return = false;
+				endif;	
+
+			}break;			
+			
 		}
 
-		
+		return $return;
+			
 	}
 
 

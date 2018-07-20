@@ -1,3 +1,12 @@
+<?php
+if(isset($_POST['exec'])){
+  $resp = array();
+  $resp['post'] = $_POST;
+  $resp['files'] = $_FILES;
+
+  exit(json_encode($resp));
+}
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -64,10 +73,13 @@ Observações:
 echo '<br>';
 ?>
 
-<form action="" method="post" enctype="multipart/form-data">
+<form action="" method="post" enctype="multipart/form-data" name="myform" id="myform">
 	<input type="file" multiple="multiple" name="arquivos" id="arquivos"/>
-	
-	<button class="btn btn-default" type="submit">Enviar</button>
+	<input type="hidden" name="exec" id="exec" value="teste_ajax" />
+  <input type="text" name="name" id="name" value="" />
+  <input type="text" name="email" id="email" value="" />
+  <input type="text" name="phone" id="phone" value="" />
+	<button class="btn btn-default" type="button" onclick="send_form()">Enviar</button>
 </form>
 
 <?php 
@@ -88,14 +100,60 @@ if(isset($_FILES['arquivos'])):
 endif;
 */
 
-
+RNH::session('eu', 'set','Programador');
+echo RNH::session('eu', 'get');
 ?>
+
+<div class="container-fluid">
+  <p>Conteudo aqui abaixo</p>
+</div>
+
+
 
 </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+
+<script src="../../cap/js/jquery.min.js"></script>
+<script src="../../cap/js/jquery.form.js"></script>
+
+
+
+    <script>
+function send_form(){
+var form = $('#myform');
+
+    var params = 'execs=test&rogerio=eu&'+form.serialize();
+    
+    $.ajax({
+    url:        '',
+    data:       params,
+    type:       'post',
+    dataType:   'json',
+
+    error:      function(){alert('Erro ao acessar a pagina desejada'); },
+    beforeSend:   function(){
+           
+      console.log('aguarde..');
+    },//fim do beforeSend
+    
+    success:    function(resposta){
+             
+     console.log(resposta);
+      
+     
+    },//fim do sucesso
+
+    complete:       function(){
+        console.log('Completei');
+    } // fim do complete    
+  });//fim do ajax
+    
+
+}
+</script>
+
   </body>
 </html>
