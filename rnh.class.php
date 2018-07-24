@@ -171,6 +171,31 @@ class RNH{
 	}
 
 
+public static function crypt($key,$value,$opt){
+    if($opt == 'crypt'){
+        $value = base64_encode($key.$value.$key);
+    }else if($opt == 'decrypt'){
+        $value = base64_decode($value);
+        $value = str_replace($key, "", $value);
+    }
+
+    return $value;
+}
+
+
+public static function safeString($string) {
+
+    // matriz de entrada
+    $what = array( 'ä','ã','à','á','â','ê','ë','è','é','ï','ì','í','ö','õ','ò','ó','ô','ü','ù','ú','û','À','Á','É','Í','Ó','Ú','ñ','Ñ','ç','Ç',' ','-','(',')',',',';',':','|','!','"','#','$','%','&','/','=','?','~','^','>','<','ª','º' );
+
+    // matriz de saída
+    $by   = array( 'a','a','a','a','a','e','e','e','e','i','i','i','o','o','o','o','o','u','u','u','u','A','A','E','I','O','U','n','n','c','C','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_' );
+
+    // devolver a string
+    return str_replace($what, $by, $string);
+}
+
+
 }# Fim da classe
 
 
