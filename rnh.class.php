@@ -4,6 +4,7 @@
 # E-mail: 			rogerionascimento.dev@outlook.com.br 	#
 # Data:				05/07/2018                           	#
 # Versão do php:	7.1.3                                	#
+#															#
 /*															*/
 class RNH{
 
